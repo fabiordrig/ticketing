@@ -5,10 +5,12 @@ deploy:
     manifests:
       - ./infra/k8s/*
 build:
-  local:
-    push: false
+  # local:
+  #   push: false
+  googleCloudBuild:
+    projectId: wide-exchanger-288400
   artifacts:
-    - image: fabiordrig/auth
+    - image: us.gcr.io/wide-exchanger-288400/auth
       context: auth
       docker:
         dockerfile: Dockerfile
