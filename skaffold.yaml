@@ -8,9 +8,9 @@ build:
   # local:
   #   push: false
   googleCloudBuild:
-    projectId: wide-exchanger-288400
+    projectId: ticketing-dev-289701
   artifacts:
-    - image: us.gcr.io/wide-exchanger-288400/auth
+    - image: us.gcr.io/ticketing-dev-289701/auth
       context: auth
       docker:
         dockerfile: Dockerfile
