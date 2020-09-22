@@ -39,12 +39,13 @@ router.post(
     await user.save();
 
     // Generate JSON WEB TOKEN
+
     const userJwt = jwt.sign(
       {
         id: user.id,
         email: user.email,
       },
-      "asdfasf"
+      process.env.JWT_KEY!
     );
 
     req.session = { jwt: userJwt };
