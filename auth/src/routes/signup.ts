@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import { body } from "express-validator";
 import jwt from "jsonwebtoken";
 
-import { UnprocessableEntity } from "../errors/unprocessable-entity-error";
+import { ConflictError } from "../errors/conflict-error";
 import { validateRequest } from "../middlewares/validate-request";
 import { User } from "../models/user";
 const router = express.Router();
@@ -23,7 +23,7 @@ router.post(
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
-      throw new UnprocessableEntity("This user already exists");
+      throw new ConflictError("This user already exists");
     }
 
     const user = User.build({
