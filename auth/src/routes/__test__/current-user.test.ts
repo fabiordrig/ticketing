@@ -1,7 +1,8 @@
 import request from "supertest";
 import { app } from "../../app";
 import { getCookieHelper } from "../../test/utils";
-import { defaultEmail, HTTP_STATUS_CODE } from "../../test/constants";
+import { defaultEmail } from "../../test/constants";
+import { HTTP_STATUS_CODE } from "../../constants";
 
 it("responds with details about the current user", async () => {
   const cookie = await getCookieHelper();

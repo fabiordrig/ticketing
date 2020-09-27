@@ -1,6 +1,6 @@
 import request from "supertest";
 import { app } from "../../app";
-import { HTTP_STATUS_CODE } from "../../test/constants";
+import { HTTP_STATUS_CODE } from "../../constants";
 
 it("clears the cookies session after signing out", async () => {
   await request(app)

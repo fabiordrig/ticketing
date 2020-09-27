@@ -1,6 +1,7 @@
 import request from "supertest";
 import { app } from "../../app";
-import { defaultEmail, defaultPassword, HTTP_STATUS_CODE } from "../../test/constants";
+import { defaultEmail, defaultPassword } from "../../test/constants";
+import { HTTP_STATUS_CODE } from "../../constants";
 
 it("return a 201 on successful signup", async () => {
   return request(app)

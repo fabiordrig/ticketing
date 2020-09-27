@@ -1,7 +1,8 @@
 import { CustomError } from "./custom-error";
+import { HTTP_STATUS_CODE } from "../constants";
 
 export class UnauthorizedError extends CustomError {
-  statusCode = 401;
+  statusCode = HTTP_STATUS_CODE.UNAUTHORIZED;
 
   constructor() {
     super("Unauthorized");

@@ -1,7 +1,8 @@
 import { CustomError } from "./custom-error";
+import { HTTP_STATUS_CODE } from "../constants";
 
 export class NotFoundError extends CustomError {
-  statusCode = 404;
+  statusCode = HTTP_STATUS_CODE.NOT_FOUND;
 
   constructor() {
     super("Route not found");

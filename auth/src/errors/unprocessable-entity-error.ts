@@ -1,7 +1,8 @@
 import { CustomError } from "./custom-error";
+import { HTTP_STATUS_CODE } from "../constants";
 
 export class UnprocessableEntity extends CustomError {
-  statusCode = 422;
+  statusCode = HTTP_STATUS_CODE.UNPROCESSABLE_ENTITY;
 
   constructor(public message: string) {
     super(message);

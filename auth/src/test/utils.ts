@@ -1,6 +1,7 @@
 import request from "supertest";
 import { app } from "../app";
-import { defaultEmail, defaultPassword, HTTP_STATUS_CODE } from "./constants";
+import { defaultEmail, defaultPassword } from "./constants";
+import { HTTP_STATUS_CODE } from "../constants";
 
 export const getCookieHelper = async () => {
   const email = defaultEmail;
