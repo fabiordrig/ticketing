@@ -5,8 +5,7 @@ import { json } from "body-parser";
 import cookieSession from "cookie-session";
 
 import { currentUserRouter, signinRouter, signoutRouter, signupRouter } from "./routes";
-import { errorHandler } from "./middlewares";
-import { NotFoundError } from "./errors/not-found-error";
+import { errorHandler, NotFoundError } from "@commons-ticketing/commons";
 
 const app = express();
 app.set("trust proxy", true);

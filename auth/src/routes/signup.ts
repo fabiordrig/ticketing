@@ -2,9 +2,10 @@ import express, { Request, Response } from "express";
 import { body } from "express-validator";
 import jwt from "jsonwebtoken";
 
-import { ConflictError } from "../errors/conflict-error";
-import { validateRequest } from "../middlewares/validate-request";
+import { ConflictError } from "@commons-ticketing/commons";
+import { validateRequest } from "@commons-ticketing/commons";
 import { User } from "../models/user";
+
 const router = express.Router();
 
 router.post(
