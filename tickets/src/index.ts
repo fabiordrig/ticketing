@@ -6,7 +6,7 @@ const start = async () => {
     throw new Error("Missing env var JWT_KEY");
   }
   if (!process.env.MONGO_URI) {
-    throw new Error("Missing env var JWT_KEY");
+    throw new Error("Missing env var MONGO_URI");
   }
   try {
     await mongoose.connect(process.env.MONGO_URI, {
