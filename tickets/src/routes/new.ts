@@ -6,6 +6,8 @@ import {
   HTTP_STATUS_CODE,
 } from "@commons-ticketing/commons";
 import { Ticket } from "../models";
+import { TicketCreatedPublisher } from "../events";
+import { natsWrapper } from "../nats-wrapper";
 
 const router = express.Router();
 
@@ -18,15 +20,23 @@ router.post(
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    const { title, price } = req.body;
+    const { reqTitle, reqPrice } = req.body;
 
     const ticket = Ticket.build({
-      title,
-      price,
+      title: reqTitle,
+      price: reqPrice,
       userId: req.currentUser!.id,
     });
 
     await ticket.save();
+
+    const { id, title, price, userId } = ticket;
+    new TicketCreatedPublisher(natsWrapper.client).publish({
+      id,
+      title,
+      price,
+      userId,
+    });
 
     res.status(HTTP_STATUS_CODE.CREATED).send(ticket);
   }
