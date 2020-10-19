@@ -20,11 +20,9 @@ router.post(
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    const { reqTitle, reqPrice } = req.body;
-
     const ticket = Ticket.build({
-      title: reqTitle,
-      price: reqPrice,
+      title: req.body.title,
+      price: req.body.price,
       userId: req.currentUser!.id,
     });
 

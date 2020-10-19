@@ -8,6 +8,8 @@ import {
   UnauthorizedError,
 } from "@commons-ticketing/commons";
 import { Ticket } from "../models";
+import { TicketUpdatedPublisher } from "../events";
+import { natsWrapper } from "../nats-wrapper";
 
 const router = express.Router();
 
@@ -20,8 +22,6 @@ router.patch(
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    const { title, price } = req.body;
-
     const ticket = await Ticket.findById(req.params.id);
 
     if (!ticket) {
@@ -32,9 +32,18 @@ router.patch(
       throw new UnauthorizedError();
     }
 
-    ticket.set({ title, body });
+    ticket.set({ title: req.body.title, price: req.body.price });
 
     await ticket.save();
+
+    const { id, title, price, userId } = ticket;
+
+    new TicketUpdatedPublisher(natsWrapper.client).publish({
+      id,
+      title,
+      price,
+      userId,
+    });
 
     res.status(HTTP_STATUS_CODE.OK).send(ticket);
   }
