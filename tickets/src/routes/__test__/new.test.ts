@@ -3,6 +3,7 @@ import { app } from "../../app";
 import { HTTP_STATUS_CODE } from "@commons-ticketing/commons";
 import { getCookieHelper } from "../../test/utils";
 import { Ticket } from "../../models";
+import { natsWrapper } from "../../nats-wrapper";
 
 it("Has a route handler listening to /api/tickets for post requests", async () => {
   const response = await request(app).post("/api/tickets").send({});
@@ -92,4 +93,21 @@ it("Create a ticket with valid inputs", async () => {
   expect(tickets.length).toEqual(1);
   expect(tickets[0].price).toEqual(price);
   expect(tickets[0].title).toEqual(title);
+});
+
+it("Published an event", async () => {
+  const title = "asuidhasiu";
+  const price = 20;
+
+  const cookie = await getCookieHelper();
+  await request(app)
+    .post("/api/tickets")
+    .set("Cookie", cookie)
+    .send({
+      title,
+      price,
+    })
+    .expect(HTTP_STATUS_CODE.CREATED);
+
+  expect(natsWrapper.client.publish).toHaveBeenCalled();
 });

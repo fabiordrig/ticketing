@@ -3,6 +3,7 @@ import { app } from "../../app";
 import mongoose, { set } from "mongoose";
 import { getCookieHelper } from "../../test/utils";
 import { HTTP_STATUS_CODE } from "@commons-ticketing/commons";
+import { natsWrapper } from "../../nats-wrapper";
 
 const title = "saudhsaua";
 const price = 10;
@@ -82,4 +83,29 @@ it("Update the ticket successfully", async () => {
     .expect(HTTP_STATUS_CODE.OK);
 
   expect(ticketResponse.body.title).toEqual("bla");
+});
+
+it("Published an event", async () => {
+  const cookie = await getCookieHelper();
+
+  const response = await request(app)
+    .post("/api/tickets")
+    .set("Cookie", cookie)
+    .send({ title, price });
+
+  await request(app)
+    .patch(`/api/tickets/${response.body.id}`)
+    .set("Cookie", cookie)
+    .send({ title, price })
+    .expect(HTTP_STATUS_CODE.OK);
+
+  const ticketResponse = await request(app)
+    .patch(`/api/tickets/${response.body.id}`)
+    .set("Cookie", cookie)
+    .send({ title: "bla", price })
+    .expect(HTTP_STATUS_CODE.OK);
+
+  expect(ticketResponse.body.title).toEqual("bla");
+
+  expect(natsWrapper.client.publish).toHaveBeenCalled();
 });
