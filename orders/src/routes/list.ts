@@ -1,9 +1,13 @@
 import express, { Request, Response } from "express";
+import { requireAuth } from "@commons-ticketing/commons";
+import { Order, OrderStatus } from "../models";
 
 const router = express.Router();
 
 router.get("/api/orders", async (req: Request, res: Response) => {
-  res.send({});
+  const orders = await Order.find({ userId: req.currentUser!.id }).populate("ticket");
+
+  res.send(orders);
 });
 
 export { router as indexOrderRouter };
