@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import { getCookieHelper } from "../../test/utils";
 import { HTTP_STATUS_CODE } from "@commons-ticketing/commons";
 import { Order, OrderStatus, Ticket } from "../../models";
+import { natsWrapper } from "../../nats-wrapper";
 
 it("Returns if the ticket does not exist", async () => {
   const cookie = await getCookieHelper();
@@ -55,4 +56,20 @@ it("Reserves a ticket", async () => {
     .expect(HTTP_STATUS_CODE.CREATED);
 });
 
-it.todo("Emits and order created event");
+it("Emits and order created event", async () => {
+  const ticket = Ticket.build({
+    title: "bla",
+    price: 20,
+  });
+
+  const cookie = await getCookieHelper();
+  await ticket.save();
+
+  await request(app)
+    .post("/api/orders")
+    .set("Cookie", cookie)
+    .send({ ticketId: ticket.id })
+    .expect(HTTP_STATUS_CODE.CREATED);
+
+  expect(natsWrapper.client.publish).toHaveBeenCalled();
+});
