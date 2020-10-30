@@ -6,6 +6,8 @@ import {
   UnauthorizedError,
 } from "@commons-ticketing/commons";
 import { Order, OrderStatus } from "../models";
+import { OrderCancelledPublisher } from "../events";
+import { natsWrapper } from "../nats-wrapper";
 
 const router = express.Router();
 
@@ -25,6 +27,11 @@ router.delete(
 
     order.status = OrderStatus.CANCELLED;
     await order.save();
+
+    new OrderCancelledPublisher(natsWrapper.client).publish({
+      id: order.id,
+      ticket: { id: order.ticket.id },
+    });
 
     res.status(HTTP_STATUS_CODE.NO_CONTENT).send(order);
   }
