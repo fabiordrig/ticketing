@@ -28,12 +28,13 @@ router.post(
 
     await ticket.save();
 
-    const { id, title, price, userId } = ticket;
+    const { id, title, price, userId, version } = ticket;
     new TicketCreatedPublisher(natsWrapper.client).publish({
       id,
       title,
       price,
       userId,
+      version,
     });
 
     res.status(HTTP_STATUS_CODE.CREATED).send(ticket);

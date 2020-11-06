@@ -36,13 +36,14 @@ router.patch(
 
     await ticket.save();
 
-    const { id, title, price, userId } = ticket;
+    const { id, title, price, userId, version } = ticket;
 
     new TicketUpdatedPublisher(natsWrapper.client).publish({
       id,
       title,
       price,
       userId,
+      version,
     });
 
     res.status(HTTP_STATUS_CODE.OK).send(ticket);
