@@ -1,12 +1,17 @@
-import { HTTP_STATUS_CODE, OrderStatus } from "@commons-ticketing/commons";
+import mongoose from "mongoose";
 import request from "supertest";
+import { HTTP_STATUS_CODE, OrderStatus } from "@commons-ticketing/commons";
 import { app } from "../../app";
 import { Order, Ticket } from "../../models";
 import { getCookieHelper } from "../../test/utils";
 import { natsWrapper } from "../../nats-wrapper";
 
 it("Marks an order as cancelled", async () => {
-  const ticket = Ticket.build({ title: "bla", price: 20 });
+  const ticket = Ticket.build({
+    title: "bla",
+    price: 20,
+    id: mongoose.Types.ObjectId().toHexString(),
+  });
   await ticket.save();
 
   const cookie = await getCookieHelper();
@@ -29,7 +34,12 @@ it("Marks an order as cancelled", async () => {
 });
 
 it("Emit a order cancelled event", async () => {
-  const ticket = Ticket.build({ title: "bla", price: 20 });
+  const ticket = Ticket.build({
+    title: "bla",
+    price: 20,
+    id: mongoose.Types.ObjectId().toHexString(),
+  });
+
   await ticket.save();
 
   const cookie = await getCookieHelper();

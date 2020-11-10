@@ -1,6 +1,6 @@
+import mongoose from "mongoose";
 import request from "supertest";
 import { app } from "../../app";
-import mongoose from "mongoose";
 import { getCookieHelper } from "../../test/utils";
 import { HTTP_STATUS_CODE } from "@commons-ticketing/commons";
 import { Order, OrderStatus, Ticket } from "../../models";
@@ -19,6 +19,7 @@ it("Returns if the ticket does not exist", async () => {
 
 it("Returns an error if the ticket is already reserved", async () => {
   const ticket = Ticket.build({
+    id: mongoose.Types.ObjectId().toHexString(),
     title: "bla",
     price: 10,
   });
@@ -43,6 +44,7 @@ it("Returns an error if the ticket is already reserved", async () => {
 
 it("Reserves a ticket", async () => {
   const ticket = Ticket.build({
+    id: mongoose.Types.ObjectId().toHexString(),
     title: "bla",
     price: 10,
   });
@@ -58,6 +60,7 @@ it("Reserves a ticket", async () => {
 
 it("Emits and order created event", async () => {
   const ticket = Ticket.build({
+    id: mongoose.Types.ObjectId().toHexString(),
     title: "bla",
     price: 20,
   });
