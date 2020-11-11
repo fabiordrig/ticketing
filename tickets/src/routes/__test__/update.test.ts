@@ -4,6 +4,7 @@ import mongoose, { set } from "mongoose";
 import { getCookieHelper } from "../../test/utils";
 import { HTTP_STATUS_CODE } from "@commons-ticketing/commons";
 import { natsWrapper } from "../../nats-wrapper";
+import { Ticket } from "../../models";
 
 const title = "saudhsaua";
 const price = 10;
@@ -108,4 +109,25 @@ it("Published an event", async () => {
   expect(ticketResponse.body.title).toEqual("bla");
 
   expect(natsWrapper.client.publish).toHaveBeenCalled();
+});
+
+it("Rejects updates if the ticket is reserved", async () => {
+  const cookie = await getCookieHelper();
+
+  const response = await request(app)
+    .post("/api/tickets")
+    .set("Cookie", cookie)
+    .send({ title, price });
+
+  const ticket = await Ticket.findById(response.body.id);
+
+  ticket?.set({ orderId: mongoose.Types.ObjectId().toHexString() });
+
+  await ticket?.save();
+
+  await request(app)
+    .patch(`/api/tickets/${response.body.id}`)
+    .set("Cookie", cookie)
+    .send({ title, price })
+    .expect(HTTP_STATUS_CODE.UNPROCESSABLE_ENTITY);
 });

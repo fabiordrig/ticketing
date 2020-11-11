@@ -6,6 +6,7 @@ import {
   HTTP_STATUS_CODE,
   NotFoundError,
   UnauthorizedError,
+  UnprocessableEntity,
 } from "@commons-ticketing/commons";
 import { Ticket } from "../models";
 import { TicketUpdatedPublisher } from "../events";
@@ -26,6 +27,10 @@ router.patch(
 
     if (!ticket) {
       throw new NotFoundError();
+    }
+
+    if (ticket.orderId) {
+      throw new UnprocessableEntity("Cannot edit a reserved ticket");
     }
 
     if (ticket.userId !== req.currentUser!.id) {
