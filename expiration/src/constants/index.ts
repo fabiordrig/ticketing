@@ -1,0 +1,1 @@
+const queueGroupName = "expiration:service";
