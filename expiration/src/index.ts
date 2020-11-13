@@ -1,4 +1,5 @@
 import { natsWrapper } from "./nats-wrapper";
+import { OrderCreatedListener } from "./events";
 
 const start = async () => {
   if (!process.env.NATS_CLIENT_ID) {
@@ -10,9 +11,7 @@ const start = async () => {
   if (!process.env.NATS_URL) {
     throw new Error("Missing env var NATS_URL");
   }
-  if (!process.env.REDIS_HOST) {
-    throw new Error("Missing env var REDIS_HOST");
-  }
+
   try {
     await natsWrapper.connect(
       process.env.NATS_CLUSTER_ID,
@@ -27,6 +26,8 @@ const start = async () => {
 
     process.on("SIGINT", () => natsWrapper.client.close());
     process.on("SIGTERM", () => natsWrapper.client.close());
+
+    new OrderCreatedListener(natsWrapper.client).listen();
   } catch (error) {
     console.log(error);
   }
