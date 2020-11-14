@@ -271,10 +271,10 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@commons-ticketing/commons@^1.0.19":
-  version "1.0.19"
-  resolved "https://registry.yarnpkg.com/@commons-ticketing/commons/-/commons-1.0.19.tgz#57b4a2a7d436b21b4543b5c61e638338ce1a7728"
-  integrity sha512-Po6P2ZH8Nsg693WK1ALyOoXeFV5l16aAngOd/hinbcCOl+89JHo85uP4TWDUgZvTkWlSrwaEFs5pnhDv2z4DdQ==
+"@commons-ticketing/commons@^1.0.20":
+  version "1.0.20"
+  resolved "https://registry.yarnpkg.com/@commons-ticketing/commons/-/commons-1.0.20.tgz#abd7f78b8f70006c83bdea4704123e52dc9e3b84"
+  integrity sha512-08Tcqe7P3fDrHHnPZqOfzBOJv6hgwO3RRYL2MZR74Bq8SoyIX4RXS0qEb9RVCSR4EtC8GsY6LowB4x8nZVQbBw==
   dependencies:
     "@types/cookie-session" "^2.0.41"
     "@types/express" "^4.17.8"
