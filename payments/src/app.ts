@@ -1,6 +1,7 @@
 import express from "express";
 import "express-async-errors";
 import { json } from "body-parser";
+import { createChargeRouter } from "./routes";
 
 import cookieSession from "cookie-session";
 
@@ -17,6 +18,7 @@ app.use(
 );
 
 app.use(currentUser);
+app.use(createChargeRouter);
 
 app.all("*", async (req, res) => {
   throw new NotFoundError();
